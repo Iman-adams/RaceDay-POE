@@ -1,66 +1,45 @@
-name: Part 1 - Validate repository structure
+name: Validate Repository Documentation Structure
 
-# Runs on every push and every pull request
 on:
   push:
+    branches: [ "main", "master" ]
   pull_request:
+    branches: [ "main", "master" ]
 
 jobs:
   validate-docs:
     runs-on: ubuntu-latest
+
     steps:
-      # Download the repository so the checks below can see the files
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Check that the docs folder exists
+      - name: Verify /docs Folder and Submissions
         run: |
-          if [ ! -d docs ]; then
-            echo "::error::The /docs folder is missing."
-            exit 1
-          fi
-          echo "docs folder found."
+          echo "Starting CI/CD validation check..."
 
-      - name: Check for the ERD image or PDF
-        run: |
-          if ls docs/* 2>/dev/null | grep -qiE '\.(png|jpg|jpeg|pdf)$'; then
-            echo "ERD found."
-          else
-            echo "::error::No ERD (.png, .jpg or .pdf) found in /docs."
+          # 1. Check if /docs folder exists
+          if [ ! -d "docs" ]; then
+            echo "::error:: The /docs folder does not exist at the root level."
             exit 1
           fi
 
-      - name: Check for the API endpoint plan
-        run: |
-          if ls docs/* 2>/dev/null | grep -qiE '\.(md|pdf)$'; then
-            echo "Endpoint plan found."
-          else
-            echo "::error::No endpoint plan (.md or .pdf) found in /docs."
+          # 2. Check for API_Endpoint_Plan.md or API_Plan.md
+          if [ ! -f "docs/API_Endpoint_Plan.md" ] && [ ! -f "docs/API_Plan.md" ]; then
+            echo "::error:: API_Endpoint_Plan.md (or API_Plan.md) is missing in /docs!"
             exit 1
           fi
 
-      - name: Check for the SQL script
-        run: |
-          if ls docs/* 2>/dev/null | grep -qiE '\.sql$'; then
-            echo "SQL script found."
-          else
-            echo "::error::No .sql script found in /docs."
+          # 3. Check for RaceDay.sql
+          if [ ! -f "docs/RaceDay.sql" ]; then
+            echo "::error:: RaceDay.sql is missing in /docs!"
             exit 1
           fi
 
-      - name: Check that the README exists
-        run: |
-          if [ ! -f README.md ]; then
-            echo "::error::README.md is missing from the repository root."
+          # 4. Check for RaceDay_ERD image (supports .png, .jpg, .jpeg)
+          if [ ! -f "docs/RaceDay_ERD.png" ] && [ ! -f "docs/RaceDay_ERD.jpg" ] && [ ! -f "docs/RaceDay_ERD.jpeg" ]; then
+            echo "::error:: RaceDay_ERD image is missing in /docs!"
             exit 1
           fi
-          echo "README found."
 
-      # Only a warning, so the build still passes before the video link is added
-      - name: Check the README has a YouTube link
-        run: |
-          if grep -qi 'youtu' README.md; then
-            echo "YouTube link found."
-          else
-            echo "::warning::README.md has no YouTube link yet."
-          fi
+          echo "SUCCESS: All required planning documents exist in the /docs folder!"
