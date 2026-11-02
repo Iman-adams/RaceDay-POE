@@ -5,6 +5,7 @@ https://youtu.be/QU9NrNSRq3k
 ## CI/CD workflow
 <img width="1491" height="543" alt="image" src="https://github.com/user-attachments/assets/f423ad2f-8241-4233-adde-9cb4dd781121" />
 
+# Part 1
 ## Section A
 ### Overview
 - Section A establishes the relational model for the entire RaceDay system. The database is structured to prevent redundant data storage while maintaining strict referential integrity across all entities.
