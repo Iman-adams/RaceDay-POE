@@ -26,4 +26,4 @@ https://youtu.be/QU9NrNSRq3k
 - It defines all six tables using structured 3-digit primary key series (100s through 600s) while strictly enforcing foreign key relationships between users, venues, events, categories, enrollments, and results.
 - It includes realistic sample seed data to test the system and ends with verification SELECT queries to instantly check that all tables were created and populated correctly.
 How it the it looks when all the tables are executed:
-<img width="1111" height="580" alt="image" src="https://github.com/user-attachments/assets/e8f7bb6e-1ea9-4f66-a7bf-c022ee20298e" />
+<img width="1293" height="596" alt="Screenshot 2026-11-02 122919" src="https://github.com/user-attachments/assets/9a0d1153-783e-4c61-a9eb-c3dd96682673" />
