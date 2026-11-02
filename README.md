@@ -1,4 +1,4 @@
-# RaceDay event and race management system
+# RaceDay POE
 ## YouTube video
 ### Part 1
 https://youtu.be/QU9NrNSRq3k
