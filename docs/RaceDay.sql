@@ -3,6 +3,7 @@ IF DB_ID('RaceDay') IS NULL
 
 USE RaceDay;
 
+-- Drop tables in reverse dependency order so the script can be re-run safely
 DROP TABLE IF EXISTS Results;
 DROP TABLE IF EXISTS Enrollment;
 DROP TABLE IF EXISTS EventCategories;
@@ -125,6 +126,7 @@ INSERT INTO Results (Result_ID, Enrollment_ID, FinishTimeMinutes, OverallRank, C
 (602, 502,  48.12, 10, 1,  3);
 SET IDENTITY_INSERT Results OFF;
 
+-- When executed it showcases all the tables
 SELECT * FROM Users;
 SELECT * FROM Venues;
 SELECT * FROM Events;
