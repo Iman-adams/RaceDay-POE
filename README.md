@@ -3,13 +3,9 @@
 RaceDay is a web-based event management system for the South African road running, walking and cycling community. Organisers create events, race categories and results. Participants browse events, enter a category, and track their own results.
 
 ## YouTube video
-### Part 2 link
 https://youtu.be/vbwbnePUmkU
-### Part 1
-https://youtu.be/QU9NrNSRq3k
 
 ## CI/CD workflow
-### Part 2
 The workflow in `.github/workflows/` runs on every push to `main`, `master` or the Part 2 branch, and on pull requests. It has two jobs:
 - **validate-docs (Part 1):** fails the build if the `/docs` folder is missing, or if it does not contain the endpoint plan (`API_Endpoint_Plan.md` or `API_Plan.md`), `RaceDay.sql`, and the ERD image (`RaceDay_ERD.png`, `.jpg` or `.jpeg`).
 - **build-and-test (Part 2):** installs .NET 8, restores the packages, builds `RaceDay.sln` in Release mode and runs every unit test. The tests use an in-memory database, so no SQL Server is needed on GitHub. The build fails if the code does not compile or any test fails.
