@@ -12,6 +12,10 @@ The workflow in `.github/workflows/` runs on every push to `main`, `master` or t
 - **build-and-test (Part 2):** installs .NET 8, restores the packages, builds `RaceDay.sln` in Release mode and runs every unit test. The tests use an in-memory database, so no SQL Server is needed on GitHub. The build fails if the code does not compile or any test fails.
 <img width="1452" height="457" alt="image" src="https://github.com/user-attachments/assets/a5a97e69-1ff1-47a7-9f2e-379617f69fb6" />
 
+### Overview
+Part 2 builds the RaceDay API with ASP.NET Core 8 and Entity Framework Core (Code-First) on top of the Part 1 design. The API implements the endpoint plan, enforces the two roles, and is documented and testable through Swagger.
+
+
 # Part 1: System planning: ERD, API endpoint plan, SQL database script
 ## YouTube video
 https://youtu.be/QU9NrNSRq3k
