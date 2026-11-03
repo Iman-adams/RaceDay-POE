@@ -10,6 +10,9 @@ https://youtu.be/QU9NrNSRq3k
 
 ## CI/CD workflow
 ### Part 2
+The workflow in `.github/workflows/` runs on every push to `main`, `master` or the Part 2 branch, and on pull requests. It has two jobs:
+- **validate-docs (Part 1):** fails the build if the `/docs` folder is missing, or if it does not contain the endpoint plan (`API_Endpoint_Plan.md` or `API_Plan.md`), `RaceDay.sql`, and the ERD image (`RaceDay_ERD.png`, `.jpg` or `.jpeg`).
+- **build-and-test (Part 2):** installs .NET 8, restores the packages, builds `RaceDay.sln` in Release mode and runs every unit test. The tests use an in-memory database, so no SQL Server is needed on GitHub. The build fails if the code does not compile or any test fails.
 <img width="1452" height="457" alt="image" src="https://github.com/user-attachments/assets/a5a97e69-1ff1-47a7-9f2e-379617f69fb6" />
 
 ### Part 1
