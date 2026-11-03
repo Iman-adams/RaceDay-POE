@@ -22,6 +22,13 @@ Part 2 builds the RaceDay API with ASP.NET Core 8 and Entity Framework Core (Cod
 - **Participant:** browses events, enrols in a category, and views their own enrolments and results.
 - Public endpoints need no login. Everything else returns `401 Unauthorized` if you are not logged in and `403 Forbidden` if your role is not allowed.
 
+## Differences from the Part 1 plan
+- The plan's **Admin** routes (`GET /api/users`, `DELETE /api/users/{id}`, `GET /api/enrollments`) are Organiser-only, because the system has only two roles.
+- Participants cannot choose their own user id or mark themselves as `Paid`. A new enrolment starts as `Pending`.
+- Added `POST /api/auth/logout`, `GET /api/auth/me` and `GET /api/results/user/{userId}`.
+- Enrolling checks the category's capacity and minimum age, and blocks duplicate enrolments, so some endpoints can also return `409 Conflict`.
+- Results are returned as a flat object (runner name, event, category, times and ranks) that leaves out private details such as the emergency contact.
+
 
 # Part 1: System planning: ERD, API endpoint plan, SQL database script
 ## YouTube video
