@@ -16,7 +16,7 @@ The workflow in `.github/workflows/` runs on every push to `main`, `master` or t
 ## YouTube video
 https://youtu.be/QU9NrNSRq3k
 ## CI/CD workflow
-The workflow in .github/workflows/part1-validate.yml runs on every push. It checks that the /docs folder exists and contains the ERD, the endpoint plan and the SQL script, and that README.md is present.
+The workflow in `.github/workflows/part1-validate.yml` runs on every push. It checks that the /docs folder exists and contains the ERD, the endpoint plan and the SQL script, and that README.md is present.
 <img width="1491" height="543" alt="image" src="https://github.com/user-attachments/assets/f423ad2f-8241-4233-adde-9cb4dd781121" />
 ## Section A
 ### Overview
