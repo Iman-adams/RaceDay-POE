@@ -12,8 +12,15 @@ The workflow in `.github/workflows/` runs on every push to `main`, `master` or t
 - **build-and-test (Part 2):** installs .NET 8, restores the packages, builds `RaceDay.sln` in Release mode and runs every unit test. The tests use an in-memory database, so no SQL Server is needed on GitHub. The build fails if the code does not compile or any test fails.
 <img width="1452" height="457" alt="image" src="https://github.com/user-attachments/assets/a5a97e69-1ff1-47a7-9f2e-379617f69fb6" />
 
-### Overview
+## Overview
 Part 2 builds the RaceDay API with ASP.NET Core 8 and Entity Framework Core (Code-First) on top of the Part 1 design. The API implements the endpoint plan, enforces the two roles, and is documented and testable through Swagger.
+
+## Authentication and roles
+- **Register and login:** users register as an Organiser or a Participant. Passwords are hashed with PBKDF2 and are never stored in plain text.
+- **Sessions:** on login, the user's id and role are stored in a server-side session. The browser only holds a session cookie, so the role cannot be faked.
+- **Organiser:** creates, edits and deletes their own events, categories and venues, captures results, and views enrolments for their own events.
+- **Participant:** browses events, enrols in a category, and views their own enrolments and results.
+- Public endpoints need no login. Everything else returns `401 Unauthorized` if you are not logged in and `403 Forbidden` if your role is not allowed.
 
 
 # Part 1: System planning: ERD, API endpoint plan, SQL database script
