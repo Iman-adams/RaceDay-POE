@@ -1,4 +1,7 @@
 # RaceDay event management system
+## About RaceDay
+RaceDay is a web-based event management system for the South African road running, walking and cycling community. Organisers create events, race categories and results. Participants browse events, enter a category, and track their own results.
+
 ## YouTube video
 ### Part 1
 https://youtu.be/QU9NrNSRq3k
@@ -7,9 +10,6 @@ https://youtu.be/QU9NrNSRq3k
 ### Part 1
 The workflow in .github/workflows/part1-validate.yml runs on every push. It checks that the /docs folder exists and contains the ERD, the endpoint plan and the SQL script, and that README.md is present.
 <img width="1491" height="543" alt="image" src="https://github.com/user-attachments/assets/f423ad2f-8241-4233-adde-9cb4dd781121" />
-
-## About RaceDay
-RaceDay is a web-based event management system for the South African road running, walking and cycling community. Organisers create events, race categories and results. Participants browse events, enter a category, and track their own results.
 
 # Part 1
 ## Section A
