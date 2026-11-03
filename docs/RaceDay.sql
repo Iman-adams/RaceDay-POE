@@ -25,6 +25,7 @@ CREATE TABLE Users (
     CONSTRAINT CK_Users_Role  CHECK (Role IN ('Organiser', 'Participant'))
 );
 
+-- Where events take place
 CREATE TABLE Venues (
     Venue_ID INT IDENTITY(1,1) PRIMARY KEY,
     Name     VARCHAR(100) NOT NULL,
@@ -33,6 +34,7 @@ CREATE TABLE Venues (
     Address  VARCHAR(150) NOT NULL
 );
 
+-- Created by an organiser, held at a venue
 CREATE TABLE Events (
     Event_ID     INT IDENTITY(1,1) PRIMARY KEY,
     Organiser_ID INT          NOT NULL,
@@ -46,6 +48,7 @@ CREATE TABLE Events (
     FOREIGN KEY (Venue_ID)     REFERENCES Venues(Venue_ID)
 );
 
+-- Race categories within an event (e.g. 10km, 21km)
 CREATE TABLE EventCategories (
     Category_ID      INT IDENTITY(1,1) PRIMARY KEY,
     Event_ID         INT           NOT NULL,
@@ -59,6 +62,7 @@ CREATE TABLE EventCategories (
     FOREIGN KEY (Event_ID) REFERENCES Events(Event_ID)
 );
 
+-- A participant entering a category (the table name is singular; the C# model maps to it with [Table("Enrollment")])
 CREATE TABLE Enrollment (
     Enrollment_ID    INT IDENTITY(1,1) PRIMARY KEY,
     User_ID          INT         NOT NULL,
@@ -72,6 +76,7 @@ CREATE TABLE Enrollment (
     CONSTRAINT UQ_Enrollment_User_Category UNIQUE (User_ID, Category_ID)
 );
 
+-- One result per enrollment
 CREATE TABLE Results (
     Result_ID         INT IDENTITY(1,1) PRIMARY KEY,
     Enrollment_ID     INT          NOT NULL,
