@@ -15,11 +15,10 @@ The workflow in `.github/workflows/` runs on every push to `main`, `master` or t
 - **build-and-test (Part 2):** installs .NET 8, restores the packages, builds `RaceDay.sln` in Release mode and runs every unit test. The tests use an in-memory database, so no SQL Server is needed on GitHub. The build fails if the code does not compile or any test fails.
 <img width="1452" height="457" alt="image" src="https://github.com/user-attachments/assets/a5a97e69-1ff1-47a7-9f2e-379617f69fb6" />
 
-### Part 1
+# Part 1: System planning: ERD, API endpoint plan, SQL database script
+## CI/CD workflow
 The workflow in .github/workflows/part1-validate.yml runs on every push. It checks that the /docs folder exists and contains the ERD, the endpoint plan and the SQL script, and that README.md is present.
 <img width="1491" height="543" alt="image" src="https://github.com/user-attachments/assets/f423ad2f-8241-4233-adde-9cb4dd781121" />
-
-# Part 1: System planning: ERD, API endpoint plan, SQL database script
 ## Section A
 ### Overview
 - Section A establishes the relational model for the entire RaceDay system. The database is structured to prevent redundant data storage while maintaining strict referential integrity across all entities.
