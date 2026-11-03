@@ -2,11 +2,14 @@ name: Validate Repository Documentation Structure
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main", "master", "part-2", "Part2" ]
   pull_request:
     branches: [ "main", "master" ]
 
 jobs:
+  # ---------------------------------------------------------------
+  # PART 1 - checks that the planning documents exist in /docs
+  # ---------------------------------------------------------------
   validate-docs:
     runs-on: ubuntu-latest
 
@@ -43,3 +46,44 @@ jobs:
           fi
 
           echo "SUCCESS: All required planning documents exist in the /docs folder!"
+
+  # ---------------------------------------------------------------
+  # PART 2 - builds the API and runs all unit tests
+  # ---------------------------------------------------------------
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      # Finds RaceDay.sln wherever it is (repo root or a Part 2 subfolder)
+      - name: Locate the solution file
+        id: find-sln
+        run: |
+          SLN=$(find . -name "RaceDay.sln" -not -path "*/node_modules/*" | head -n 1)
+          if [ -z "$SLN" ]; then
+            echo "::notice::No RaceDay.sln found yet - skipping the Part 2 build."
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Using solution: $SLN"
+            echo "found=true" >> "$GITHUB_OUTPUT"
+            echo "path=$SLN" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Restore dependencies
+        if: steps.find-sln.outputs.found == 'true'
+        run: dotnet restore "${{ steps.find-sln.outputs.path }}"
+
+      - name: Build
+        if: steps.find-sln.outputs.found == 'true'
+        run: dotnet build "${{ steps.find-sln.outputs.path }}" --configuration Release --no-restore
+
+      - name: Run unit tests
+        if: steps.find-sln.outputs.found == 'true'
+        run: dotnet test "${{ steps.find-sln.outputs.path }}" --configuration Release --no-build --verbosity normal
