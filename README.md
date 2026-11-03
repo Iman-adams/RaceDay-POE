@@ -29,7 +29,7 @@ Part 2 builds the RaceDay API with ASP.NET Core 8 and Entity Framework Core (Cod
 - Enrolling checks the category's capacity and minimum age, and blocks duplicate enrolments, so some endpoints can also return `409 Conflict`.
 - Results are returned as a flat object (runner name, event, category, times and ranks) that leaves out private details such as the emergency contact.
 
-### How to run
+## How to run
 1. Open `RaceDay.sln` in Visual Studio 2022 (.NET 8).
 2. In `appsettings.json`, set `DefaultConnection` to your SQL Server instance.
 3. In the Package Manager Console (default project `RaceDay.API`), run `Update-Database` to create the tables from the migration.
@@ -37,7 +37,13 @@ Part 2 builds the RaceDay API with ASP.NET Core 8 and Entity Framework Core (Cod
 5. Press F5. Swagger opens in the browser.
 6. Log in with `POST /api/auth/login` using one of the sample logins above. The session cookie then applies to your later requests.
 
-
+## Unit tests
+Open **Test > Test Explorer** and choose **Run All**, or run `dotnet test`. The xUnit tests use an in-memory database and cover:
+- User registration and login, including wrong passwords and duplicate emails
+- Event management by Organisers, and rejection of Participants and other Organisers
+- Venue and category role rules
+- Event enrolments, including the capacity, age and duplicate checks
+- Capturing and viewing results
 
 # Part 1: System planning: ERD, API endpoint plan, SQL database script
 ## YouTube video
