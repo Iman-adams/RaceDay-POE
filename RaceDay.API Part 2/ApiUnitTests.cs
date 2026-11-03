@@ -11,10 +11,7 @@ namespace RaceDay.Tests
 {
     public class ApiUnitTests
     {
-        // =====================================================================
         // Helpers
-        // =====================================================================
-
         // A brand-new in-memory database for every test, so tests never affect each other
         private static RaceDayDbContext GetDatabaseContext()
         {
@@ -66,9 +63,7 @@ namespace RaceDay.Tests
             return db;
         }
 
-        // =====================================================================
-        // 1. User registration and login
-        // =====================================================================
+        // User registration and login
 
         [Fact]
         public async Task Register_ValidUser_ReturnsCreated_AndStoresHashedPassword()
@@ -148,9 +143,7 @@ namespace RaceDay.Tests
             Assert.IsType<UnauthorizedObjectResult>(result);
         }
 
-        // =====================================================================
-        // 2. Event management (Organisers can manage events, others cannot)
-        // =====================================================================
+        // Event management (Organisers can manage events, others cannot)
 
         [Fact]
         public async Task CreateEvent_Organiser_ReturnsCreated_AndUsesSessionUserAsOrganiser()
@@ -239,9 +232,7 @@ namespace RaceDay.Tests
             Assert.Single(events);
         }
 
-        // =====================================================================
-        // 3. Venues and categories (role rules)
-        // =====================================================================
+        // Venues and categories (role rules)
 
         [Fact]
         public async Task GetVenues_ReturnsListOfVenues()
@@ -294,9 +285,7 @@ namespace RaceDay.Tests
             Assert.Equal(403, forbidden.StatusCode);
         }
 
-        // =====================================================================
-        // 4. Event enrolments (Participants enrol, and it is recorded correctly)
-        // =====================================================================
+        // Event enrolments (Participants enrol, and it is recorded correctly)
 
         [Fact]
         public async Task Enrol_Participant_ReturnsCreated_AndLinksLoggedInUserToCategory()
@@ -410,9 +399,7 @@ namespace RaceDay.Tests
             Assert.Equal(501, list[0].EnrollmentId);
         }
 
-        // =====================================================================
-        // 5. Results (Organisers capture, Participants view their own)
-        // =====================================================================
+        // Results (Organisers capture, Participants view their own)
 
         [Fact]
         public async Task CaptureResult_OwnerOrganiser_ReturnsCreated()
@@ -477,9 +464,7 @@ namespace RaceDay.Tests
             Assert.Equal(403, forbidden.StatusCode);
         }
 
-        // =====================================================================
         // 6. User profile
-        // =====================================================================
 
         [Fact]
         public async Task GetUsers_ParticipantRole_ReturnsForbidden403()
@@ -521,10 +506,8 @@ namespace RaceDay.Tests
         }
     }
 
-    // =========================================================================
     // A tiny fake session so controllers can be tested without a web server.
     // It stores values in a dictionary, just like the real session stores them per user.
-    // =========================================================================
     public class TestSession : ISession
     {
         private readonly Dictionary<string, byte[]> _sessionStorage = new();
