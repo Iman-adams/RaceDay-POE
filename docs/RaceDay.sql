@@ -11,6 +11,7 @@ DROP TABLE IF EXISTS Events;
 DROP TABLE IF EXISTS Venues;
 DROP TABLE IF EXISTS Users;
 
+-- Organisers and participants
 CREATE TABLE Users (
     User_ID      INT IDENTITY(1,1) PRIMARY KEY,
     FullName     VARCHAR(100) NOT NULL,
