@@ -4,12 +4,6 @@ using RaceDay.MVC.Services;
 
 namespace RaceDay.MVC.Filters
 {
-    // Put this on a controller (or a single action) to protect it:
-    //   [SessionAuthorize]                        - any logged-in user
-    //   [SessionAuthorize(RoleNames.Organiser)]   - Organisers only
-    // Not logged in  -> sent to the Login page.
-    // Wrong role     -> sent to the Access Denied page.
-    // (The API checks the role again on every call, so this is for a good user experience, not the only protection.)
     public class SessionAuthorizeAttribute : ActionFilterAttribute
     {
         private readonly string[] _allowedRoles;
