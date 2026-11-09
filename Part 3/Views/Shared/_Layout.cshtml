@@ -5,11 +5,9 @@
     var role = Context.Session.GetString(SessionKeys.UserRole);
     var userName = Context.Session.GetString(SessionKeys.UserName) ?? "";
 
-    // The first letters of the first two names, shown in the round badge (Mahmood Mohammad -> MM)
     var initials = string.Concat(userName.Split(' ', StringSplitOptions.RemoveEmptyEntries)
                                          .Take(2).Select(part => char.ToUpper(part[0])));
 
-    // Which page are we on? Used to highlight the matching menu item.
     var controller = ViewContext.RouteData.Values["controller"]?.ToString();
     var action = ViewContext.RouteData.Values["action"]?.ToString();
 
