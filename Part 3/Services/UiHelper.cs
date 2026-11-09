@@ -1,7 +1,6 @@
 ﻿namespace RaceDay.MVC.Services
 {
     // Small helpers used by the views so the same rules are not repeated on every page.
-
     public static class UiHelper
     {
         // The statuses an organiser can give an enrolment
