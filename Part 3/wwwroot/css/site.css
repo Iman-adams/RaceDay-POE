@@ -1,16 +1,4 @@
-/* ==========================================================================
-   RaceDay theme
-   ONE file styles the whole site.
-
-   1. Colours are defined once as variables (--rd-...). Change a colour here
-      and it changes everywhere.
-   2. Layouts that we built ourselves (page shell, event cards, filter bar,
-      dashboard tiles, profile header, log in) use native CSS Grid and Flexbox.
-   3. Bootstrap is still loaded, but only as a base for the form fields, the
-      table and the button shapes. Its colours are re-themed below.
-   ========================================================================== */
-
-/* ---------- 1. Colour palette and shared settings ---------- */
+/* Colour palette and shared settings */
 :root {
     --rd-bg: #F6F0F7; /* warm lavender page background */
     --rd-soft: #EDE3F2; /* soft lavender (icon circles, date blocks) */
@@ -94,7 +82,7 @@ h1 {
     margin-bottom: 1.5rem;
 }
 
-/* ---------- 2. Icons ----------
+/* Icons
    The icons are drawn once in _Layout.cshtml and reused with
    <svg class="icon"><use href="#i-calendar" /></svg> */
 .icon {
@@ -108,7 +96,7 @@ h1 {
     stroke-linejoin: round;
 }
 
-/* ---------- 3. Navigation bar ---------- */
+/* Navigation bar */
 .rd-nav {
     background: var(--rd-navy);
     padding-block: .65rem;
@@ -205,7 +193,7 @@ h1 {
     border-color: rgba(255, 255, 255, .35);
 }
 
-/* ---------- 4. Buttons and links ---------- */
+/* Buttons and links */
 a {
     color: var(--rd-primary);
 }
@@ -313,7 +301,7 @@ a {
             background: var(--rd-bg);
         }
 
-/* ---------- 5. Forms ---------- */
+/* Forms */
 .form-label {
     font-weight: 600;
     font-size: .85rem;
@@ -352,7 +340,7 @@ main > form[method="post"] {
     box-shadow: var(--rd-shadow);
 }
 
-/* ---------- 6. Panels, cards and tables ---------- */
+/* Panels, cards and tables */
 /* A white box with a thin border. Used for filters, forms and dashboard sections. */
 .rd-panel {
     background: var(--rd-white);
@@ -434,7 +422,7 @@ main > form[method="post"] {
     box-shadow: none;
 }
 
-/* ---------- 7. Status labels (Confirmed / Pending / ...) ---------- */
+/* Status labels (Confirmed / Pending / ...) */
 .badge {
     border-radius: 999px;
     font-weight: 600;
@@ -467,7 +455,7 @@ main > form[method="post"] {
     text-transform: uppercase;
 }
 
-/* ---------- 8. Filter bar (events page) ----------
+/* Filter bar (events page)
    CSS Grid: as many columns as fit, the search box is twice as wide. */
 .filter-bar {
     display: grid;
@@ -545,7 +533,7 @@ main > form[method="post"] {
         padding-left: 2.5rem;
     }
 
-/* ---------- 9. Event cards ----------
+/* Event cards
    CSS Grid again: cards fill the row and wrap by themselves, no column classes needed. */
 .event-grid {
     display: grid;
@@ -617,7 +605,7 @@ main > form[method="post"] {
     margin-top: auto;
 }
 
-/* ---------- 10. Event detail page ---------- */
+/* Event detail page */
 .event-hero {
     background: var(--rd-white);
     border: 1px solid var(--rd-border);
@@ -644,7 +632,7 @@ main > form[method="post"] {
         margin-bottom: 0;
     }
 
-/* ---------- 11. Dashboard ---------- */
+/* Dashboard */
 .stat-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
@@ -727,7 +715,7 @@ main > form[method="post"] {
         font-weight: 800;
     }
 
-/* ---------- 12. Log in and Register ----------
+/* Log in and Register
    On these pages the whole background turns deep navy and the form is a white card. */
 body.page-auth {
     background: var(--rd-navy);
@@ -822,7 +810,7 @@ body.page-auth {
     font-size: .9rem;
 }
 
-/* ---------- 13. Profile header ---------- */
+/* Profile header */
 .profile-head {
     display: flex;
     align-items: center;
@@ -846,7 +834,7 @@ body.page-auth {
         color: var(--rd-muted);
     }
 
-/* ---------- 14. Messages and footer ---------- */
+/* Messages and footer */
 .alert {
     border-radius: var(--rd-radius-sm);
     border: 0;
@@ -884,7 +872,7 @@ body.page-auth {
     font-size: .85rem;
 }
 
-/* ---------- 15. Error and "page not found" pages ---------- */
+/* Error and "page not found" pages */
 .error-page {
     max-width: 36rem;
     margin: 3rem auto;
