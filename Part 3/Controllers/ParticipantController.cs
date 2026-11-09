@@ -5,8 +5,8 @@ using RaceDay.MVC.Services;
 
 namespace RaceDay.MVC.Controllers
 {
-    // Everything in here is for Participants only. Like the Organiser pages, nothing here touches the
-    // database: it all goes through the API, which checks again that the participant may do it.
+    // Everything in here is for Participants only.
+    // Like the Organiser pages, nothing here touches the database: it all goes through the API, which checks again that the participant may do it.
     [SessionAuthorize(RoleNames.Participant)]
     public class ParticipantController : Controller
     {
@@ -20,9 +20,7 @@ namespace RaceDay.MVC.Controllers
         // The id of the participant who is logged in
         private int CurrentUserId => HttpContext.Session.GetInt32(SessionKeys.UserId) ?? 0;
 
-        // =====================================================================
-        //  My enrolments (the events I have entered, with colour-coded status)
-        // =====================================================================
+        // My enrolments (the events I have entered, with colour-coded status)
 
         public async Task<IActionResult> MyEvents()
         {
@@ -52,10 +50,7 @@ namespace RaceDay.MVC.Controllers
             return View(rows);
         }
 
-        // =====================================================================
-        //  Enrol in a category
-        // =====================================================================
-
+        // Enrol in a category
         [HttpGet]
         public async Task<IActionResult> Enrol(int categoryId)
         {
