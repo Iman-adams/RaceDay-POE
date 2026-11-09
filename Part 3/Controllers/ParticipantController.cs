@@ -87,8 +87,6 @@ namespace RaceDay.MVC.Controllers
             return RedirectToAction("MyEvents");
         }
 
-        // Loads the category and its event. Returns null (with an error message) if the event
-        // cannot be entered, for example because it has already happened.
         private async Task<EnrolFormViewModel?> BuildEnrolFormAsync(int categoryId)
         {
             var category = await _api.GetAsync<CategoryModel>($"api/categories/{categoryId}");
@@ -124,10 +122,7 @@ namespace RaceDay.MVC.Controllers
             };
         }
 
-        // =====================================================================
         //  Cancel an enrolment
-        // =====================================================================
-
         [HttpGet]
         public async Task<IActionResult> CancelEnrolment(int id)
         {
@@ -154,10 +149,7 @@ namespace RaceDay.MVC.Controllers
             return RedirectToAction("MyEvents");
         }
 
-        // =====================================================================
         //  My results
-        // =====================================================================
-
         public async Task<IActionResult> MyResults()
         {
             var rows = new List<MyResultRow>();
@@ -185,10 +177,7 @@ namespace RaceDay.MVC.Controllers
             return View(rows);
         }
 
-        // =====================================================================
         //  Profile
-        // =====================================================================
-
         [HttpGet]
         public async Task<IActionResult> Profile()
         {
@@ -233,7 +222,6 @@ namespace RaceDay.MVC.Controllers
 
             if (!result.Success)
             {
-                // e.g. "That email is already used by another account."
                 ModelState.AddModelError(string.Empty, result.ErrorMessage ?? "We could not save your profile. Please try again.");
                 return View(model);
             }
