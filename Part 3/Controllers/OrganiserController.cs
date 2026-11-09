@@ -6,8 +6,7 @@ using RaceDay.MVC.Services;
 namespace RaceDay.MVC.Controllers
 {
     // Everything in here is for Organisers only.
-    // The pages never touch the database: every read and write goes through the API (via RaceDayApiClient),
-    // and the API checks again that the organiser owns whatever they are changing.
+    // The pages never touch the database: every read and write goes through the API, and the API checks again that the organiser owns whatever they are changing.
     [SessionAuthorize(RoleNames.Organiser)]
     public class OrganiserController : Controller
     {
@@ -505,8 +504,7 @@ namespace RaceDay.MVC.Controllers
             return RedirectToAction("Enrolments", new { eventId });
         }
 
-        // Results (enter finish times and positions)
-
+        // Results
         public async Task<IActionResult> Results(int eventId)
         {
             var ev = await LoadOwnEventAsync(eventId);
