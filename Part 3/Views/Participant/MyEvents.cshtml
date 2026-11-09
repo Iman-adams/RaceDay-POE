@@ -1,0 +1,64 @@
+﻿@using RaceDay.MVC.Services
+@model List<MyEnrolmentRow>
+@{
+    ViewData["Title"] = "My enrolments";
+}
+
+<h1>My enrolments</h1>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <p role="alert" class="alert alert-warning">@ViewBag.ErrorMessage</p>
+}
+else if (!Model.Any())
+{
+    <p>You have not entered any events yet. <a asp-controller="Home" asp-action="Index">Find an event</a> to enrol.</p>
+}
+
+@if (Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">Event</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Enrolled on</th>
+                    <th scope="col">Bib</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"><span class="visually-hidden">Actions</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in Model)
+                {
+                    var en = row.Enrollment;
+                    <tr>
+                        <td>
+                            @if (row.Event != null)
+                            {
+                                <a asp-controller="Home" asp-action="Details" asp-route-id="@row.Event.EventId">@row.Event.Title</a>
+                            }
+                            else
+                            {
+                                @("-")
+                            }
+                        </td>
+                        <td>@(row.Event?.EventDate.ToString("dd MMM yyyy, HH:mm") ?? "-")</td>
+                        <td>@(en.Category != null ? $"{en.Category.CategoryName} ({en.Category.DistanceKm:0.##} km)" : "-")</td>
+                        <td>@en.EnrollmentDate.ToString("dd MMM yyyy")</td>
+                        <td>@(en.BibNumber ?? "-")</td>
+                        <td><span class="badge @UiHelper.StatusClass(en.PaymentStatus)">@en.PaymentStatus</span></td>
+                        <td class="text-end">
+                            @if (row.CanCancel)
+                            {
+                                <a asp-action="CancelEnrolment" asp-route-id="@en.EnrollmentId">Cancel</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

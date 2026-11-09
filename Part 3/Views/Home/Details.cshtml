@@ -1,0 +1,116 @@
+﻿@using RaceDay.MVC.Services
+@model EventDetailsViewModel
+@{
+    ViewData["Title"] = Model.Event.Title;
+    var ev = Model.Event;
+}
+
+<p class="mb-2"><a asp-action="Index">&larr; Back to events</a></p>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <p role="alert" class="alert alert-warning">@ViewBag.ErrorMessage</p>
+}
+
+@{
+    // The sport decides the colour of the label and the left edge of the header block
+    var sport = ev.EventType switch
+    {
+        "Running" => "sport-running",
+        "Cycling" => "sport-cycling",
+        "Walking" => "sport-walking",
+        _ => ""
+    };
+}
+
+<section class="event-hero @sport" aria-labelledby="event-title">
+    <header>
+        <span class="sport-tag">@ev.EventType</span>
+        <span class="badge @UiHelper.StatusClass(ev.Status)">@ev.Status</span>
+    </header>
+    <h1 id="event-title">@ev.Title</h1>
+    <p>@ev.Description</p>
+    <ul class="event-facts">
+        <li class="when">
+            <svg class="icon" aria-hidden="true"><use href="#i-calendar" /></svg>
+            <span>@ev.EventDate.ToString("dddd, dd MMMM yyyy, HH:mm")</span>
+        </li>
+        @if (ev.Venue != null)
+        {
+            <li>
+                <svg class="icon" aria-hidden="true"><use href="#i-pin" /></svg>
+                <span>@ev.Venue.Name, @ev.Venue.Address, @ev.Venue.City, @ev.Venue.Province</span>
+            </li>
+        }
+        @if (ev.Organiser != null)
+        {
+            <li>
+                <svg class="icon" aria-hidden="true"><use href="#i-flag" /></svg>
+                <span>Organised by @ev.Organiser.FullName</span>
+            </li>
+        }
+    </ul>
+</section>
+
+<h2 class="h4">Race categories</h2>
+
+@if (!Model.IsParticipant)
+{
+    <p class="text-muted">Only participants can enter an event.</p>
+}
+else if (!Model.CanEnrol)
+{
+    <p class="alert alert-info" role="status">Entries for this event are closed.</p>
+}
+
+@if (!Model.Categories.Any())
+{
+    <p>The race categories for this event have not been added yet.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">Category</th>
+                    <th scope="col" class="text-end">Distance</th>
+                    <th scope="col" class="text-end">Entry fee</th>
+                    <th scope="col">Starts</th>
+                    <th scope="col" class="text-end">Min age</th>
+                    <th scope="col"><span class="visually-hidden">Enrol</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model.Categories)
+                {
+                    <tr>
+                        <td>
+                            <strong>@c.CategoryName</strong>
+                            @if (!string.IsNullOrWhiteSpace(c.RouteDescription))
+                            {
+                                <br />
+                    
+                                <span class="text-muted small">@c.RouteDescription</span>
+                            }
+                        </td>
+                        <td class="text-end">@c.DistanceKm.ToString("0.##") km</td>
+                        <td class="text-end">R @c.EntryFee.ToString("N2", System.Globalization.CultureInfo.InvariantCulture)</td>
+                        <td>@c.StartDateTime.ToString("dd MMM yyyy, HH:mm")</td>
+                        <td class="text-end">@(c.MinAge?.ToString() ?? "-")</td>
+                        <td class="text-end">
+                            @if (Model.EnrolledCategoryIds.Contains(c.CategoryId))
+                            {
+                                <span class="badge bg-success">You are enrolled</span>
+                            }
+                            else if (Model.CanEnrol)
+                            {
+                                <a class="btn btn-sm btn-primary" asp-controller="Participant" asp-action="Enrol" asp-route-categoryId="@c.CategoryId">Enrol</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

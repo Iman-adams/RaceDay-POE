@@ -1,0 +1,133 @@
+﻿@using RaceDay.MVC.Services
+@model EventListViewModel
+@{
+    ViewData["Title"] = "Events";
+    var filter = Model.Filter;
+}
+
+<h1>Find an event</h1>
+<p class="page-sub">Browse races, rides and walks, then enter in a few clicks.</p>
+
+@* The filters. This is a GET form, so the chosen filters appear in the address and can be bookmarked.
+   The grid layout is in site.css (.filter-bar). *@
+<form asp-action="Index" method="get" class="rd-panel filter-bar" aria-label="Filter events">
+    <div class="wide">
+        <label for="Search" class="form-label">Search</label>
+        <div class="search-field">
+            <svg class="icon" aria-hidden="true"><use href="#i-search" /></svg>
+            <input id="Search" name="Search" value="@filter.Search" class="form-control" placeholder="Name, description or venue" />
+        </div>
+    </div>
+    <div>
+        <label for="EventType" class="form-label">Type</label>
+        <select id="EventType" name="EventType" class="form-select">
+            <option value="">All types</option>
+            @foreach (var type in new[] { "Running", "Cycling", "Walking" })
+            {
+                <option value="@type" selected="@(filter.EventType == type)">@type</option>
+            }
+        </select>
+    </div>
+    <div>
+        <label for="Location" class="form-label">Location</label>
+        <select id="Location" name="Location" class="form-select">
+            <option value="">All locations</option>
+            @foreach (var city in Model.Locations)
+            {
+                <option value="@city" selected="@(filter.Location == city)">@city</option>
+            }
+        </select>
+    </div>
+    <div>
+        <label for="Status" class="form-label">Show</label>
+        <select id="Status" name="Status" class="form-select">
+            <option value="" selected="@(string.IsNullOrEmpty(filter.Status))">All events</option>
+            <option value="Upcoming" selected="@(filter.Status == "Upcoming")">Upcoming</option>
+            <option value="Completed" selected="@(filter.Status == "Completed")">Completed</option>
+            <option value="Cancelled" selected="@(filter.Status == "Cancelled")">Cancelled</option>
+        </select>
+    </div>
+    <div>
+        <label for="DateFrom" class="form-label">From date</label>
+        <input id="DateFrom" name="DateFrom" type="date" value="@filter.DateFrom?.ToString("yyyy-MM-dd")" class="form-control" />
+    </div>
+    <div>
+        <label for="DateTo" class="form-label">To date</label>
+        <input id="DateTo" name="DateTo" type="date" value="@filter.DateTo?.ToString("yyyy-MM-dd")" class="form-control" />
+    </div>
+    <div class="actions">
+        <button type="submit" class="btn btn-primary">Apply filters</button>
+        <a class="btn btn-outline-secondary" asp-action="Index" asp-route-Status="Upcoming">Reset</a>
+    </div>
+</form>
+
+@* Friendly message if the API could not be reached or returned an error *@
+@if (ViewBag.ErrorMessage != null)
+{
+    <p role="alert" class="alert alert-warning">@ViewBag.ErrorMessage</p>
+}
+else if (!Model.Events.Any())
+{
+    <p>No events match your filters. Try changing or resetting them.</p>
+}
+else
+{
+    <p class="text-muted">@Model.Events.Count event@(Model.Events.Count == 1 ? "" : "s") found</p>
+}
+
+@* The cards sit in a CSS Grid (.event-grid): they fill the row and wrap on their own *@
+<section class="event-grid" aria-label="Events">
+    @foreach (var ev in Model.Events)
+    {
+        // The sport decides the colour of the label, the top edge and the icons of the card
+        var sport = ev.EventType switch
+        {
+            "Running" => "sport-running",
+            "Cycling" => "sport-cycling",
+            "Walking" => "sport-walking",
+            _ => ""
+        };
+        Model.CategoriesByEvent.TryGetValue(ev.EventId, out var categories);
+
+        <article class="event-card @sport">
+            <header>
+                <span class="sport-tag">@ev.EventType</span>
+                @* "Upcoming" is the normal case, so only unusual states get a label *@
+                @if (ev.Status != "Upcoming")
+                {
+                    <span class="badge @UiHelper.StatusClass(ev.Status)">@ev.Status</span>
+                }
+            </header>
+            <h2>@ev.Title</h2>
+            <p class="desc">@ev.Description</p>
+            <ul class="event-facts">
+                <li class="when">
+                    <svg class="icon" aria-hidden="true"><use href="#i-calendar" /></svg>
+                    <span>@ev.EventDate.ToString("ddd, dd MMM yyyy, HH:mm")</span>
+                </li>
+                @if (ev.Venue != null)
+                {
+                    <li>
+                        <svg class="icon" aria-hidden="true"><use href="#i-pin" /></svg>
+                        <span>@ev.Venue.Name, @ev.Venue.City</span>
+                    </li>
+                }
+                <li>
+                    <svg class="icon" aria-hidden="true"><use href="#i-route" /></svg>
+                    @if (categories != null && categories.Any())
+                    {
+                        <span>@(string.Join(" · ", categories.Select(c => c.DistanceKm.ToString("0.##") + " km")))</span>
+                    }
+                    else
+                    {
+                        <span>Race categories coming soon</span>
+                    }
+                </li>
+            </ul>
+            <a class="btn btn-primary" asp-action="Details" asp-route-id="@ev.EventId">
+                View details
+                <svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg>
+            </a>
+        </article>
+    }
+</section>

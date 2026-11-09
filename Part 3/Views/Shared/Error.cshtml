@@ -1,0 +1,36 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Something went wrong";
+
+    // The browser's status code: 404 = page not found, 403 = not allowed, anything else = a fault on our side
+    var code = Context.Response.StatusCode;
+    var isLoggedIn = Context.Session.GetInt32(RaceDay.MVC.Services.SessionKeys.UserId) != null;
+
+    var (heading, message) = code switch
+    {
+        404 => ("We could not find that page", "The address may be wrong, or the page may have been moved."),
+        403 => ("You are not allowed to see that page", "Your account does not have access to this part of RaceDay."),
+        _ => ("Something went wrong", "An unexpected error happened on our side. Please try again in a moment.")
+    };
+}
+
+<section class="error-page" aria-labelledby="error-heading">
+    <p class="error-code" aria-hidden="true">@(code >= 400 ? code.ToString() : "Oops")</p>
+    <h1 id="error-heading">@heading</h1>
+    <p>@message</p>
+
+    @if (Model.ShowRequestId)
+    {
+        <p class="small">Reference: <code>@Model.RequestId</code></p>
+    }
+
+    @* Send the visitor somewhere useful: the events page if logged in, the log in page if not *@
+    @if (isLoggedIn)
+    {
+        <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Back to events</a>
+    }
+    else
+    {
+        <a class="btn btn-primary" asp-controller="Account" asp-action="Login">Go to log in</a>
+    }
+</section>

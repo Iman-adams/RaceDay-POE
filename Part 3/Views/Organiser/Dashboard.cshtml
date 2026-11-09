@@ -1,0 +1,128 @@
+﻿@using RaceDay.MVC.Services
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Organiser dashboard";
+}
+
+<h1>Organiser dashboard</h1>
+<p class="page-sub">Your events and entries at a glance.</p>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <p role="alert" class="alert alert-warning">@ViewBag.ErrorMessage</p>
+}
+
+@* Summary figures in a CSS Grid. Each tile has its own colour (the --stat variable) and icon. *@
+<section aria-label="Summary" class="stat-grid">
+    <div class="stat" style="--stat: var(--rd-primary)">
+        <span class="stat-icon" aria-hidden="true"><svg class="icon"><use href="#i-calendar" /></svg></span>
+        <div>
+            <p class="stat-number">@Model.TotalEvents</p>
+            <p class="stat-label">My events</p>
+        </div>
+    </div>
+    <div class="stat" style="--stat: var(--rd-running)">
+        <span class="stat-icon" aria-hidden="true"><svg class="icon"><use href="#i-flag" /></svg></span>
+        <div>
+            <p class="stat-number">@Model.UpcomingCount</p>
+            <p class="stat-label">Upcoming events</p>
+        </div>
+    </div>
+    <div class="stat" style="--stat: var(--rd-green)">
+        <span class="stat-icon" aria-hidden="true"><svg class="icon"><use href="#i-users" /></svg></span>
+        <div>
+            <p class="stat-number">@Model.TotalEnrolments</p>
+            <p class="stat-label">Total enrolments</p>
+        </div>
+    </div>
+    <div class="stat" style="--stat: var(--rd-orange)">
+        <span class="stat-icon" aria-hidden="true"><svg class="icon"><use href="#i-clock" /></svg></span>
+        <div>
+            <p class="stat-number">@Model.PendingEnrolments</p>
+            <p class="stat-label">Pending enrolments</p>
+        </div>
+    </div>
+</section>
+
+@* Upcoming dates *@
+<section aria-labelledby="upcoming-heading" class="rd-panel mb-4">
+    <div class="rd-panel-head">
+        <h2 id="upcoming-heading">Upcoming events</h2>
+        <a asp-action="Events">View all events</a>
+    </div>
+
+    @if (!Model.UpcomingEvents.Any())
+    {
+        <p class="mb-0">You have no upcoming events. <a asp-action="CreateEvent">Create one</a>.</p>
+    }
+    else
+    {
+        @foreach (var ev in Model.UpcomingEvents)
+        {
+            <div class="date-row">
+                @* A small calendar block: FRI / 20 / NOV *@
+                <div class="date-block" aria-hidden="true">
+                    <span class="dow">@ev.EventDate.ToString("ddd").ToUpper()</span>
+                    <span class="day">@ev.EventDate.Day</span>
+                    <span class="mon">@ev.EventDate.ToString("MMM").ToUpper()</span>
+                </div>
+                <div class="flex-grow-1">
+                    <strong>@ev.Title</strong><br />
+                    <span class="text-muted small">
+                        @ev.EventDate.ToString("dddd, dd MMMM yyyy, HH:mm")
+                        @if (ev.Venue != null)
+                        {
+                            @(" · " + ev.Venue.Name + ", " + ev.Venue.City)
+                        }
+                    </span>
+                </div>
+                <span class="badge @UiHelper.StatusClass(ev.Status)">@ev.Status</span>
+            </div>
+        }
+    }
+</section>
+
+@* Enrolments per event *@
+<section aria-labelledby="events-heading" class="rd-panel">
+    <div class="rd-panel-head">
+        <h2 id="events-heading">Enrolments per event</h2>
+        <a class="btn btn-primary btn-sm" asp-action="CreateEvent">Create event</a>
+    </div>
+
+    @if (!Model.Rows.Any())
+    {
+        <p class="mb-0">You have not created any events yet.</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Event</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Status</th>
+                        <th scope="col" class="text-end">Categories</th>
+                        <th scope="col" class="text-end">Enrolments</th>
+                        <th scope="col" class="text-end">Pending</th>
+                        <th scope="col"><span class="visually-hidden">Actions</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.Rows)
+                    {
+                        <tr>
+                            <td>@row.Event.Title</td>
+                            <td>@row.Event.EventDate.ToString("dd MMM yyyy")</td>
+                            <td><span class="badge @UiHelper.StatusClass(row.Event.Status)">@row.Event.Status</span></td>
+                            <td class="text-end">@row.Categories</td>
+                            <td class="text-end">@row.Enrolments</td>
+                            <td class="text-end">@row.Pending</td>
+                            <td class="text-end"><a asp-action="Enrolments" asp-route-eventId="@row.Event.EventId">View enrolments</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

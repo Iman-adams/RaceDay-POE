@@ -1,0 +1,39 @@
+﻿@model EnrolFormViewModel
+@{
+    ViewData["Title"] = "Enrol";
+}
+
+<p class="mb-1"><a asp-controller="Home" asp-action="Details" asp-route-id="@Model.EventId">&larr; Back to event</a></p>
+<h1>Enrol in @Model.CategoryName</h1>
+
+@* A summary so the participant can check what they are entering *@
+<dl class="row">
+    <dt class="col-sm-3">Event</dt>
+    <dd class="col-sm-9">@Model.EventTitle</dd>
+    <dt class="col-sm-3">Category</dt>
+    <dd class="col-sm-9">@Model.CategoryName (@Model.DistanceKm.ToString("0.##") km)</dd>
+    <dt class="col-sm-3">Starts</dt>
+    <dd class="col-sm-9">@Model.StartDateTime.ToString("dddd, dd MMMM yyyy, HH:mm")</dd>
+    <dt class="col-sm-3">Entry fee</dt>
+    <dd class="col-sm-9">R @Model.EntryFee.ToString("N2", System.Globalization.CultureInfo.InvariantCulture)</dd>
+</dl>
+
+<form asp-action="Enrol" method="post">
+    <input type="hidden" asp-for="CategoryId" />
+    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+    <div class="mb-3">
+        <label asp-for="EmergencyContact" class="form-label"></label>
+        <input asp-for="EmergencyContact" type="tel" class="form-control" autocomplete="tel" />
+        <span asp-validation-for="EmergencyContact" class="text-danger"></span>
+    </div>
+
+    <p class="text-muted">Your entry will be <strong>Pending</strong> until the organiser confirms it.</p>
+
+    <button type="submit" class="btn btn-primary">Confirm enrolment</button>
+    <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Details" asp-route-id="@Model.EventId">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,52 @@
+﻿@model ResultFormViewModel
+@{
+    ViewData["Title"] = "Enter result";
+}
+
+<p class="mb-1"><a asp-action="Results" asp-route-eventId="@Model.EventId">&larr; Back to results</a></p>
+<h1>@(Model.ResultId == 0 ? "Enter result" : "Edit result")</h1>
+<p class="text-muted">
+    @Model.RunnerName @(string.IsNullOrEmpty(Model.BibNumber) ? "" : $"(bib {Model.BibNumber})") &ndash; @Model.CategoryName, @ViewBag.EventTitle
+</p>
+
+<form asp-action="EnterResult" method="post">
+    <input type="hidden" asp-for="ResultId" />
+    <input type="hidden" asp-for="EnrollmentId" />
+    <input type="hidden" asp-for="EventId" />
+    <input type="hidden" asp-for="RunnerName" />
+    <input type="hidden" asp-for="BibNumber" />
+    <input type="hidden" asp-for="CategoryName" />
+    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+    <div class="form-check mb-3">
+        <input asp-for="Completed" class="form-check-input" />
+        <label asp-for="Completed" class="form-check-label"></label>
+        <div class="form-text">Untick this if the runner did not finish.</div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="FinishTime" class="form-label"></label>
+        <input asp-for="FinishTime" class="form-control" placeholder="e.g. 1:45:30" autocomplete="off" />
+        <span asp-validation-for="FinishTime" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="OverallRank" class="form-label"></label>
+            <input asp-for="OverallRank" type="number" class="form-control" />
+            <span asp-validation-for="OverallRank" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="CategoryRank" class="form-label"></label>
+            <input asp-for="CategoryRank" type="number" class="form-control" />
+            <span asp-validation-for="CategoryRank" class="text-danger"></span>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save result</button>
+    <a class="btn btn-outline-secondary" asp-action="Results" asp-route-eventId="@Model.EventId">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

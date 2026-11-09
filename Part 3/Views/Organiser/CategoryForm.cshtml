@@ -1,0 +1,65 @@
+﻿@model CategoryFormViewModel
+@{
+    var isNew = Model.CategoryId == 0;
+    ViewData["Title"] = isNew ? "Add category" : "Edit category";
+}
+
+<p class="mb-1"><a asp-action="Categories" asp-route-eventId="@Model.EventId">&larr; Back to categories</a></p>
+<h1>@ViewData["Title"]</h1>
+<p class="text-muted">Event: @ViewBag.EventTitle</p>
+
+<form asp-action="@(isNew ? "CreateCategory" : "EditCategory")" method="post">
+    <input type="hidden" asp-for="CategoryId" />
+    <input type="hidden" asp-for="EventId" />
+    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+    <div class="mb-3">
+        <label asp-for="CategoryName" class="form-label"></label>
+        <input asp-for="CategoryName" class="form-control" />
+        <span asp-validation-for="CategoryName" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="DistanceKm" class="form-label"></label>
+            <input asp-for="DistanceKm" type="number" step="any" class="form-control" />
+            <span asp-validation-for="DistanceKm" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="EntryFee" class="form-label"></label>
+            <input asp-for="EntryFee" type="number" step="any" class="form-control" />
+            <span asp-validation-for="EntryFee" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="MaxParticipants" class="form-label"></label>
+            <input asp-for="MaxParticipants" type="number" class="form-control" />
+            <span asp-validation-for="MaxParticipants" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="StartDateTime" class="form-label"></label>
+            <input asp-for="StartDateTime" type="datetime-local" class="form-control" />
+            <span asp-validation-for="StartDateTime" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="MinAge" class="form-label"></label>
+            <input asp-for="MinAge" type="number" class="form-control" />
+            <span asp-validation-for="MinAge" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="RouteDescription" class="form-label"></label>
+        <textarea asp-for="RouteDescription" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="RouteDescription" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">@(isNew ? "Add category" : "Save changes")</button>
+    <a class="btn btn-outline-secondary" asp-action="Categories" asp-route-eventId="@Model.EventId">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

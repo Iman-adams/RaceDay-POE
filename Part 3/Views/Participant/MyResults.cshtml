@@ -1,0 +1,66 @@
+﻿@using RaceDay.MVC.Services
+@model List<MyResultRow>
+@{
+    ViewData["Title"] = "My results";
+}
+
+<h1>My results</h1>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <p role="alert" class="alert alert-warning">@ViewBag.ErrorMessage</p>
+}
+else if (!Model.Any())
+{
+    <p>You have no results yet. Your results will appear here after the organiser has captured them.</p>
+}
+
+@if (Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">Event</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Finish time</th>
+                    <th scope="col">Position</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in Model)
+                {
+                    var r = row.Result;
+                    <tr>
+                        <td>@r.EventTitle</td>
+                        <td>@r.EventDate.ToString("dd MMM yyyy")</td>
+                        <td>@r.CategoryName</td>
+                        @if (r.Completed == 0)
+                        {
+                            <td colspan="2"><span class="badge bg-secondary">Did not finish</span></td>
+                        }
+                        else
+                        {
+                            <td>@UiHelper.FormatFinishTime(r.FinishTimeMinutes)</td>
+                            <td>
+                                @if (r.OverallRank.HasValue)
+                                {
+                                    <strong>@UiHelper.Ordinal(r.OverallRank.Value)</strong>
+                                    if (row.FinishersInCategory > 0)
+                                    {
+                                        @(" of " + row.FinishersInCategory)
+                                    }
+                                }
+                                else
+                                {
+                                    @("-")
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
