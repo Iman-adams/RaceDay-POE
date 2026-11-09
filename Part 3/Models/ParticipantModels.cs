@@ -2,9 +2,7 @@
 
 namespace RaceDay.MVC.Models
 {
-    // ======================================================================
     //  Data coming back from the API
-    // ======================================================================
 
     // A user's own profile (the API never sends the password)
     public class UserProfileModel
@@ -16,10 +14,7 @@ namespace RaceDay.MVC.Models
         public string? Gender { get; set; }
         public DateTime? DateOfBirth { get; set; }
     }
-
-    // ======================================================================
     //  Models the pages are built from
-    // ======================================================================
 
     // The filters on the events page. They travel in the address (?Search=...&EventType=...)
     public class EventFilter
@@ -40,7 +35,7 @@ namespace RaceDay.MVC.Models
         // Cities for the location drop-down
         public List<string> Locations { get; set; } = new();
 
-        // The categories of each event (to show distances on the cards)
+        // The categories of each event
         public Dictionary<int, List<CategoryModel>> CategoriesByEvent { get; set; } = new();
     }
 
@@ -74,11 +69,7 @@ namespace RaceDay.MVC.Models
         // How many runners finished in the same category (for "47th of 312")
         public int FinishersInCategory { get; set; }
     }
-
-    // ======================================================================
     //  Forms
-    // ======================================================================
-
     public class EnrolFormViewModel
     {
         public int CategoryId { get; set; }
