@@ -1,0 +1,78 @@
+﻿@model ProfileViewModel
+@{
+    ViewData["Title"] = "My profile";
+}
+
+@{
+    // The first letters of the first two names 
+    var initials = string.Concat(Model.FullName.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                                               .Take(2).Select(part => char.ToUpper(part[0])));
+}
+
+@* Header: avatar, name, account type and email.
+   (In the next step the initials are replaced by the uploaded profile picture.) *@
+<section class="profile-head" aria-label="Profile summary">
+    <span class="rd-avatar rd-avatar-lg" aria-hidden="true">@initials</span>
+    <div>
+        <h1>@Model.FullName</h1>
+        <span class="badge bg-primary">@Model.Role</span>
+        <p>@Model.Email</p>
+    </div>
+</section>
+
+<form asp-action="Profile" method="post" class="rd-panel">
+    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+    <div class="mb-3">
+        <label asp-for="FullName" class="form-label"></label>
+        <input asp-for="FullName" class="form-control" autocomplete="name" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" autocomplete="email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="Gender" class="form-label"></label>
+            <select asp-for="Gender" class="form-select">
+                <option value="">Prefer not to say</option>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="DateOfBirth" class="form-label"></label>
+            <input asp-for="DateOfBirth" class="form-control" />
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+        </div>
+    </div>
+
+    <h2 class="h5 mt-4">Change password</h2>
+    <p class="text-muted">Leave these empty to keep your current password.</p>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="NewPassword" class="form-label"></label>
+            <input asp-for="NewPassword" class="form-control" autocomplete="new-password" />
+            <span asp-validation-for="NewPassword" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="ConfirmPassword" class="form-label"></label>
+            <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+    </div>
+
+    <p class="text-muted">Profile picture upload is added in a later step.</p>
+
+    <button type="submit" class="btn btn-primary">Save changes</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

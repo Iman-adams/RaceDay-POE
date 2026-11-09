@@ -1,0 +1,77 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+    ViewData["Page"] = "page-auth";   // dark navy background on this page
+}
+
+<div class="auth-wrap">
+    <section class="auth-card auth-card-wide" aria-labelledby="register-heading">
+        <p class="auth-brand"><svg class="rd-logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#8B5CF6" /><path d="M9 9l7 7-7 7M16 9l7 7-7 7" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg><span class="text">Race<span>Day</span></span></p>
+        <h1 id="register-heading">Create your account</h1>
+
+        @* auth-grid puts the fields in two columns (one column on a phone). "span-2" = across both columns. *@
+        <form asp-action="Register" method="post" class="auth-grid">
+            <div asp-validation-summary="ModelOnly" class="text-danger span-2" role="alert"></div>
+
+            <div class="mb-3">
+                <label asp-for="FullName" class="form-label"></label>
+                <input asp-for="FullName" class="form-control" autocomplete="name" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" autocomplete="email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control" autocomplete="new-password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ConfirmPassword" class="form-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Role" class="form-label">I am a...</label>
+                <select asp-for="Role" class="form-select">
+                    <option value="">Choose a role</option>
+                    <option value="Participant">Participant (I want to enter events)</option>
+                    <option value="Organiser">Organiser (I run events)</option>
+                </select>
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Gender" class="form-label"></label>
+                <select asp-for="Gender" class="form-select">
+                    <option value="">Prefer not to say</option>
+                    <option value="Female">Female</option>
+                    <option value="Male">Male</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DateOfBirth" class="form-label"></label>
+                <input asp-for="DateOfBirth" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+
+            <div class="span-2">
+                <button type="submit" class="btn btn-primary mt-2">Register</button>
+            </div>
+        </form>
+
+        <p class="auth-foot">Already have an account? <a asp-action="Login">Log in</a></p>
+    </section>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,23 @@
+﻿@* The heading and tab bar shown at the top of every page that belongs to one event.
+   The controller sets ViewBag.EventId and ViewBag.EventTitle; each page sets ViewData["Active"]. *@
+@{
+    var eventId = (int)ViewBag.EventId;
+    var active = ViewData["Active"] as string;
+}
+
+<p class="mb-1"><a asp-action="Events">&larr; Back to my events</a></p>
+<h1>@ViewBag.EventTitle</h1>
+
+<nav aria-label="Event sections">
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+            <a class="nav-link @(active == "Categories" ? "active" : "")" asp-action="Categories" asp-route-eventId="@eventId">Categories</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(active == "Enrolments" ? "active" : "")" asp-action="Enrolments" asp-route-eventId="@eventId">Enrolments</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(active == "Results" ? "active" : "")" asp-action="Results" asp-route-eventId="@eventId">Results</a>
+        </li>
+    </ul>
+</nav>

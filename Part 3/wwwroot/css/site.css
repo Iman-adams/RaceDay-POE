@@ -1,0 +1,901 @@
+/* Colour palette and shared settings */
+:root {
+    --rd-bg: #F6F0F7; /* warm lavender page background */
+    --rd-soft: #EDE3F2; /* soft lavender (icon circles, date blocks) */
+    --rd-primary: #6D3FD6; /* primary purple (buttons, links) */
+    --rd-primary-dark: #5A31B8;
+    --rd-violet: #8B5CF6; /* bright violet (focus rings, logo) */
+    --rd-running: #D9467A; /* pink   - running  */
+    --rd-cycling: #7C4DDB; /* purple - cycling  */
+    --rd-walking: #43B889; /* green  - walking  */
+    --rd-navy: #17152F; /* deep navy / dark purple (nav bar, headings) */
+    --rd-white: #FFFFFF;
+    --rd-green: #35A76F; /* Completed / Confirmed / Paid */
+    --rd-orange: #E59A32; /* Pending */
+    --rd-text: #211B3A;
+    --rd-muted: #716A80;
+    --rd-border: #E2D8E8;
+    --rd-radius: 14px; /* corners of cards and panels */
+    --rd-radius-sm: 10px; /* corners of buttons and fields */
+    --rd-shadow: 0 1px 2px rgba(23, 21, 47, .05), 0 6px 18px rgba(23, 21, 47, .05);
+    /* Tell Bootstrap to use our colours */
+    --bs-body-bg: var(--rd-bg);
+    --bs-body-color: var(--rd-text);
+    --bs-body-font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    --bs-secondary-color: var(--rd-muted);
+    --bs-border-color: var(--rd-border);
+    --bs-link-color: var(--rd-primary);
+    --bs-link-color-rgb: 109, 63, 214;
+    --bs-link-hover-color: var(--rd-primary-dark);
+    --bs-primary: #6D3FD6;
+    --bs-primary-rgb: 109, 63, 214;
+    --bs-success-rgb: 53, 167, 111;
+    --bs-warning-rgb: 229, 154, 50;
+    --bs-danger-rgb: 200, 55, 75;
+    --bs-secondary-rgb: 113, 106, 128;
+}
+
+html {
+    font-size: 15px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+/* The page is a column: navigation, content (grows to fill the screen), footer.
+   That keeps the footer at the bottom without any positioning tricks. */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    background: var(--rd-bg);
+    color: var(--rd-text);
+}
+    /* The content container grows so the footer stays at the bottom */
+    body > .container {
+        flex: 1;
+        width: 100%;
+    }
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--rd-navy);
+    font-weight: 700;
+    letter-spacing: -.01em;
+}
+
+h1 {
+    font-size: 1.9rem;
+    margin-bottom: .35rem;
+}
+
+.container {
+    max-width: 1140px;
+}
+
+/* Small helper text under a page title */
+.page-sub {
+    color: var(--rd-muted);
+    margin-bottom: 1.5rem;
+}
+
+/* Icons
+   The icons are drawn once in _Layout.cshtml and reused with
+   <svg class="icon"><use href="#i-calendar" /></svg> */
+.icon {
+    width: 1.1em;
+    height: 1.1em;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Navigation bar */
+.rd-nav {
+    background: var(--rd-navy);
+    padding-block: .65rem;
+    margin-bottom: 2rem;
+}
+
+.rd-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+    color: var(--rd-white);
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    text-decoration: none;
+}
+
+    .rd-brand:hover {
+        color: var(--rd-white);
+    }
+
+    .rd-brand .text span {
+        color: #B79BFF;
+    }
+
+.rd-logo {
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+}
+
+.rd-nav .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, .78);
+    border-radius: 999px;
+    padding: .4rem 1rem;
+    font-size: .95rem;
+    font-weight: 500;
+}
+
+    .rd-nav .navbar-nav .nav-link:hover {
+        color: var(--rd-white);
+        background: rgba(255, 255, 255, .1);
+    }
+
+    .rd-nav .navbar-nav .nav-link.active {
+        color: var(--rd-white);
+        background: var(--rd-primary);
+    }
+
+/* The round badge with the user's initials (or their picture) */
+.rd-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--rd-violet);
+    color: var(--rd-white);
+    font-size: .85rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    object-fit: cover;
+}
+
+.rd-avatar-lg {
+    width: 5.5rem;
+    height: 5.5rem;
+    font-size: 1.8rem;
+    background: var(--rd-navy);
+}
+
+.rd-user {
+    color: rgba(255, 255, 255, .88);
+    font-size: .9rem;
+}
+
+    .rd-user small {
+        opacity: .7;
+    }
+
+/* The Log out button looks like a menu link */
+.rd-nav .btn-link {
+    color: rgba(255, 255, 255, .78);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+    .rd-nav .btn-link:hover {
+        color: var(--rd-white);
+    }
+
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, .35);
+}
+
+/* Buttons and links */
+a {
+    color: var(--rd-primary);
+}
+
+    a:hover {
+        color: var(--rd-primary-dark);
+    }
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    border-radius: var(--rd-radius-sm);
+    font-weight: 600;
+    padding: .55rem 1.15rem;
+}
+
+.btn-sm {
+    padding: .3rem .8rem;
+    font-size: .85rem;
+}
+
+.btn-primary, .btn-primary:disabled {
+    background-color: var(--rd-primary);
+    border-color: var(--rd-primary);
+    color: var(--rd-white);
+}
+
+    .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+        background-color: var(--rd-primary-dark);
+        border-color: var(--rd-primary-dark);
+        color: var(--rd-white);
+    }
+
+.btn-outline-primary {
+    color: var(--rd-primary);
+    border-color: var(--rd-primary);
+    background: transparent;
+}
+
+    .btn-outline-primary:hover, .btn-outline-primary:active, .btn-outline-primary:focus {
+        background-color: var(--rd-primary);
+        border-color: var(--rd-primary);
+        color: var(--rd-white);
+    }
+
+.btn-outline-secondary {
+    color: var(--rd-muted);
+    border-color: var(--rd-border);
+    background: var(--rd-white);
+}
+
+    .btn-outline-secondary:hover, .btn-outline-secondary:active, .btn-outline-secondary:focus {
+        background-color: var(--rd-soft);
+        border-color: var(--rd-border);
+        color: var(--rd-text);
+    }
+
+/* The keyboard-focus ring in the brand colour */
+.btn:focus, .btn:active:focus, .nav-link:focus-visible, .form-control:focus, .form-select:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 .2rem rgba(139, 92, 246, .35);
+    outline: 0;
+}
+
+.bg-primary {
+    background-color: var(--rd-primary) !important;
+}
+
+.bg-success {
+    background-color: var(--rd-green) !important;
+}
+
+.bg-warning {
+    background-color: var(--rd-orange) !important;
+}
+
+.bg-secondary {
+    background-color: var(--rd-muted) !important;
+}
+
+.text-muted {
+    color: var(--rd-muted) !important;
+}
+
+/* Tabs on the organiser event pages (Categories / Enrolments / Results) */
+.nav-tabs {
+    border-bottom-color: var(--rd-border);
+}
+
+    .nav-tabs .nav-link {
+        color: var(--rd-primary);
+        border-radius: var(--rd-radius-sm) var(--rd-radius-sm) 0 0;
+        font-weight: 500;
+    }
+
+        .nav-tabs .nav-link:hover {
+            border-color: var(--rd-border) var(--rd-border) transparent;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--rd-navy);
+            font-weight: 700;
+            border-color: var(--rd-border) var(--rd-border) var(--rd-bg);
+            background: var(--rd-bg);
+        }
+
+/* Forms */
+.form-label {
+    font-weight: 600;
+    font-size: .85rem;
+    margin-bottom: .3rem;
+    color: var(--rd-text);
+}
+
+.form-control, .form-select {
+    border-color: var(--rd-border);
+    border-radius: var(--rd-radius-sm);
+    padding: .6rem .85rem;
+    background-color: var(--rd-white);
+}
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--rd-violet);
+    }
+
+    .form-control::placeholder {
+        color: #A59DB3;
+    }
+
+.field-validation-error, .text-danger {
+    color: #C4304B !important;
+    font-size: .85rem;
+}
+
+/* Any form that sits directly on a page (create event, enrol, results...) becomes a white panel.
+   Forms inside tables (such as the status update on the enrolments page) are not affected. */
+main > form[method="post"] {
+    max-width: 44rem;
+    background: var(--rd-white);
+    border: 1px solid var(--rd-border);
+    border-radius: var(--rd-radius);
+    padding: 1.5rem;
+    box-shadow: var(--rd-shadow);
+}
+
+/* Panels, cards and tables */
+/* A white box with a thin border. Used for filters, forms and dashboard sections. */
+.rd-panel {
+    background: var(--rd-white);
+    border: 1px solid var(--rd-border);
+    border-radius: var(--rd-radius);
+    padding: 1.25rem;
+    box-shadow: var(--rd-shadow);
+}
+
+.rd-panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+    .rd-panel-head h2 {
+        font-size: 1.15rem;
+        margin: 0;
+    }
+
+.card {
+    background: var(--rd-white);
+    border: 1px solid var(--rd-border);
+    border-radius: var(--rd-radius);
+}
+
+/* Tables sit inside a white bordered box with rounded corners */
+.table-responsive {
+    background: var(--rd-white);
+    border: 1px solid var(--rd-border);
+    border-radius: var(--rd-radius);
+    box-shadow: var(--rd-shadow);
+}
+
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-border-color: var(--rd-border);
+    --bs-table-hover-bg: #FAF6FB;
+    margin-bottom: 0;
+}
+
+    .table > thead > tr > th {
+        background: #FAF6FB;
+        color: var(--rd-muted);
+        font-size: .72rem;
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        padding: .8rem 1rem;
+    }
+
+    .table > tbody > tr > td {
+        padding: .85rem 1rem;
+    }
+
+    .table > tbody > tr:last-child > td {
+        border-bottom: 0;
+    }
+
+    .table > :not(:first-child) {
+        border-top: 1px solid var(--rd-border);
+    }
+
+    .table > :not(caption) > * > * {
+        border-bottom-color: var(--rd-border);
+    }
+
+    .table > :not(:last-child) > :last-child > * {
+        border-bottom-color: var(--rd-border);
+    }
+
+/* A table inside a panel does not need a second box */
+.rd-panel .table-responsive {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+/* Status labels (Confirmed / Pending / ...) */
+.badge {
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: .75rem;
+    padding: .4em .85em;
+}
+
+/* The sport label on an event: Running = pink, Cycling = purple, Walking = green */
+.sport-running {
+    --sport: var(--rd-running);
+}
+
+.sport-cycling {
+    --sport: var(--rd-cycling);
+}
+
+.sport-walking {
+    --sport: var(--rd-walking);
+}
+
+.sport-tag {
+    display: inline-block;
+    padding: .25rem .75rem;
+    border-radius: 999px;
+    background: var(--sport, var(--rd-primary));
+    color: var(--rd-white);
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+}
+
+/* Filter bar (events page)
+   CSS Grid: as many columns as fit, the search box is twice as wide. */
+.filter-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
+    gap: .9rem 1rem;
+    align-items: end;
+    margin-bottom: 1.5rem;
+}
+
+    .filter-bar .wide {
+        grid-column: span 2;
+    }
+
+@media (max-width: 575px) {
+    .filter-bar .wide {
+        grid-column: auto;
+    }
+}
+
+.filter-bar .actions {
+    display: flex;
+    gap: .5rem;
+}
+
+.filter-bar .btn {
+    white-space: nowrap;
+}
+
+/* On wide screens a fixed 12-column grid keeps the two rows tidy:
+   row 1 = search, type, location, show   row 2 = from, to, buttons */
+@media (min-width: 992px) {
+    .filter-bar {
+        grid-template-columns: repeat(12, 1fr);
+    }
+
+        .filter-bar > :nth-child(1) {
+            grid-column: span 5;
+        }
+
+        .filter-bar > :nth-child(2) {
+            grid-column: span 2;
+        }
+
+        .filter-bar > :nth-child(3) {
+            grid-column: span 3;
+        }
+
+        .filter-bar > :nth-child(4) {
+            grid-column: span 2;
+        }
+
+        .filter-bar > :nth-child(5),
+        .filter-bar > :nth-child(6) {
+            grid-column: span 3;
+        }
+
+        .filter-bar > .actions {
+            grid-column: span 6;
+        }
+}
+
+.search-field {
+    position: relative;
+}
+
+    .search-field .icon {
+        position: absolute;
+        left: .85rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--rd-muted);
+    }
+
+    .search-field .form-control {
+        padding-left: 2.5rem;
+    }
+
+/* Event cards
+   CSS Grid again: cards fill the row and wrap by themselves, no column classes needed. */
+.event-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18.5rem, 1fr));
+    gap: 1.25rem;
+}
+
+.event-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--rd-white);
+    border: 1px solid var(--rd-border);
+    border-top: 4px solid var(--sport, var(--rd-primary));
+    border-radius: var(--rd-radius);
+    padding: 1.25rem;
+    box-shadow: var(--rd-shadow);
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+
+    .event-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 26px rgba(23, 21, 47, .1);
+    }
+
+    .event-card header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: .85rem;
+    }
+
+    .event-card h2 {
+        font-size: 1.15rem;
+        margin: 0 0 .35rem;
+    }
+
+    .event-card .desc {
+        color: var(--rd-muted);
+        font-size: .92rem;
+        margin: 0;
+    }
+
+/* One fact per line: a small icon followed by the text */
+.event-facts {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 1.25rem;
+    display: grid;
+    gap: .45rem;
+    font-size: .9rem;
+}
+
+    .event-facts li {
+        display: flex;
+        align-items: flex-start;
+        gap: .6rem;
+    }
+
+    .event-facts .icon {
+        margin-top: .2rem;
+        color: var(--sport, var(--rd-primary));
+    }
+
+    .event-facts .when {
+        font-weight: 600;
+    }
+
+.event-card .btn {
+    margin-top: auto;
+}
+
+/* Event detail page */
+.event-hero {
+    background: var(--rd-white);
+    border: 1px solid var(--rd-border);
+    border-left: 6px solid var(--sport, var(--rd-primary));
+    border-radius: var(--rd-radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--rd-shadow);
+}
+
+    .event-hero header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: .75rem;
+        margin-bottom: .75rem;
+    }
+
+    .event-hero h1 {
+        margin-bottom: .5rem;
+    }
+
+    .event-hero .event-facts {
+        margin-bottom: 0;
+    }
+
+/* Dashboard */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--rd-white);
+    border: 1px solid var(--rd-border);
+    border-radius: var(--rd-radius);
+    padding: 1rem 1.25rem;
+    box-shadow: var(--rd-shadow);
+}
+/* The coloured circle behind the icon: the colour comes from style="--stat: ..." on the tile */
+.stat-icon {
+    display: grid;
+    place-items: center;
+    width: 2.9rem;
+    height: 2.9rem;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--stat, var(--rd-primary)) 14%, white);
+    color: var(--stat, var(--rd-primary));
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.stat-number {
+    font-size: 1.9rem;
+    font-weight: 800;
+    line-height: 1.05;
+    color: var(--rd-navy);
+    margin: 0;
+}
+
+.stat-label {
+    color: var(--rd-muted);
+    font-size: .88rem;
+    margin: 0;
+}
+
+/* A row in the "upcoming events" list: date block + title + label */
+.date-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-block: .7rem;
+    border-top: 1px solid var(--rd-border);
+}
+
+    .date-row:first-of-type {
+        border-top: 0;
+    }
+
+.date-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 3.75rem;
+    padding: .4rem 0;
+    border-radius: var(--rd-radius-sm);
+    background: var(--rd-soft);
+    color: var(--rd-primary);
+    line-height: 1.15;
+    flex-shrink: 0;
+}
+
+    .date-block .dow, .date-block .mon {
+        font-size: .68rem;
+        font-weight: 700;
+        letter-spacing: .07em;
+    }
+
+    .date-block .day {
+        font-size: 1.45rem;
+        font-weight: 800;
+    }
+
+/* Log in and Register
+   On these pages the whole background turns deep navy and the form is a white card. */
+body.page-auth {
+    background: var(--rd-navy);
+}
+
+    body.page-auth .rd-nav {
+        background: transparent;
+        margin-bottom: 0;
+    }
+
+    body.page-auth .footer, body.page-auth .footer a {
+        color: rgba(255, 255, 255, .6) !important;
+        border-color: rgba(255, 255, 255, .12) !important;
+    }
+
+.auth-wrap {
+    display: flex;
+    justify-content: center;
+    padding-block: 2rem 3rem;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 44rem; /* the Log in card: much wider than before (was 27rem) */
+    background: var(--rd-white);
+    border-radius: 18px;
+    padding: 2.5rem 2.75rem;
+    box-shadow: 0 24px 60px rgba(8, 6, 28, .45);
+}
+    /* The Register card is even wider */
+    .auth-card.auth-card-wide {
+        max-width: 56rem;
+    }
+
+/* On a phone the card uses less padding so the fields keep their width */
+@media (max-width: 575px) {
+    .auth-card {
+        padding: 1.75rem 1.25rem;
+    }
+}
+
+/* The Register form lays its fields out in two columns (one column on a phone).
+   "span-2" makes an item stretch across both columns. */
+.auth-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 1.5rem;
+}
+
+    .auth-grid .span-2 {
+        grid-column: 1 / -1;
+    }
+
+@media (max-width: 639px) {
+    .auth-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.auth-card .auth-brand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .55rem;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--rd-navy);
+    letter-spacing: -.02em;
+}
+
+    .auth-card .auth-brand .text span {
+        color: var(--rd-primary);
+    }
+
+.auth-card h1 {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--rd-muted);
+    margin: .25rem 0 1.5rem;
+}
+
+.auth-card .btn-primary {
+    width: 100%;
+    padding-block: .7rem;
+}
+
+.auth-foot {
+    text-align: center;
+    margin: 1.25rem 0 0;
+    color: var(--rd-muted);
+    font-size: .9rem;
+}
+
+/* Profile header */
+.profile-head {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    background: var(--rd-white);
+    border: 1px solid var(--rd-border);
+    border-radius: var(--rd-radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--rd-shadow);
+    max-width: 44rem;
+}
+
+    .profile-head h1 {
+        margin: 0 0 .35rem;
+        font-size: 1.6rem;
+    }
+
+    .profile-head p {
+        margin: .35rem 0 0;
+        color: var(--rd-muted);
+    }
+
+/* Messages and footer */
+.alert {
+    border-radius: var(--rd-radius-sm);
+    border: 0;
+    border-left: 4px solid;
+}
+
+.alert-success {
+    background: #E6F5EC;
+    border-color: var(--rd-green);
+    color: #1F6B44;
+}
+
+.alert-danger {
+    background: #FBE9EC;
+    border-color: #C4304B;
+    color: #8E1F34;
+}
+
+.alert-warning {
+    background: #FCF1DF;
+    border-color: var(--rd-orange);
+    color: #7A4B0A;
+}
+
+.alert-info {
+    background: #EDE3F2;
+    border-color: var(--rd-primary);
+    color: #3C2380;
+}
+
+.footer {
+    margin-top: 2rem;
+    padding-block: 1.1rem;
+    border-top: 1px solid var(--rd-border);
+    font-size: .85rem;
+}
+
+/* Error and "page not found" pages */
+.error-page {
+    max-width: 36rem;
+    margin: 3rem auto;
+    text-align: center;
+}
+
+.error-code {
+    font-size: 5rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--rd-primary);
+    margin: 0 0 .5rem;
+    letter-spacing: -.03em;
+}
+
+.error-page h1 {
+    font-size: 1.6rem;
+}
+
+.error-page p {
+    color: var(--rd-muted);
+}
+
+.error-page .btn {
+    margin-top: .75rem;
+}

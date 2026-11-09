@@ -1,0 +1,61 @@
+﻿@using RaceDay.MVC.Services
+@model ResultsPageModel
+@{
+    ViewData["Title"] = "Results";
+    ViewData["Active"] = "Results";
+}
+
+<partial name="_EventNav" />
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <p role="alert" class="alert alert-warning">@ViewBag.ErrorMessage</p>
+}
+
+<h2 class="h4">Results</h2>
+
+@if (!Model.Rows.Any())
+{
+    <p>Nobody has enrolled in this event yet, so there are no results to enter.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">Participant</th>
+                    <th scope="col">Bib</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Finish time</th>
+                    <th scope="col">Overall</th>
+                    <th scope="col">In category</th>
+                    <th scope="col"><span class="visually-hidden">Actions</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in Model.Rows)
+                {
+                    var r = row.Result;
+                    <tr>
+                        <td>@(row.Enrollment.User?.FullName ?? "Unknown")</td>
+                        <td>@(row.Enrollment.BibNumber ?? "-")</td>
+                        <td>@(row.Enrollment.Category?.CategoryName ?? "-")</td>
+                        @if (r == null)
+                        {
+                            <td colspan="3" class="text-muted">No result entered yet</td>
+                            <td class="text-end"><a class="btn btn-sm btn-primary" asp-action="EnterResult" asp-route-enrollmentId="@row.Enrollment.EnrollmentId">Enter result</a></td>
+                        }
+                        else
+                        {
+                            <td>@(r.Completed == 0 ? "Did not finish" : UiHelper.FormatFinishTime(r.FinishTimeMinutes))</td>
+                            <td>@(r.OverallRank.HasValue? UiHelper.Ordinal(r.OverallRank.Value) : "-")</td>
+                            <td>@(r.CategoryRank.HasValue? UiHelper.Ordinal(r.CategoryRank.Value) : "-")</td>
+                            <td class="text-end"><a asp-action="EnterResult" asp-route-enrollmentId="@row.Enrollment.EnrollmentId">Edit result</a></td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -1,0 +1,66 @@
+﻿@using RaceDay.MVC.Services
+@model List<EventListRow>
+@{
+    ViewData["Title"] = "My events";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="mb-0">My events</h1>
+    <a class="btn btn-primary" asp-action="CreateEvent">Create event</a>
+</div>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <p role="alert" class="alert alert-warning">@ViewBag.ErrorMessage</p>
+}
+else if (!Model.Any())
+{
+    <p>You have not created any events yet. Click <strong>Create event</strong> to add your first one.</p>
+}
+
+<div class="table-responsive">
+    <table class="table align-middle">
+        <thead>
+            <tr>
+                <th scope="col">Event</th>
+                <th scope="col">Type</th>
+                <th scope="col">Date</th>
+                <th scope="col">Location</th>
+                <th scope="col">Distances</th>
+                <th scope="col">Status</th>
+                <th scope="col"><span class="visually-hidden">Actions</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Model)
+            {
+                var ev = row.Event;
+                <tr>
+                    <td>
+                        <strong>@ev.Title</strong><br />
+                        <span class="text-muted small">@ev.Description</span>
+                    </td>
+                    <td>@ev.EventType</td>
+                    <td>@ev.EventDate.ToString("dd MMM yyyy, HH:mm")</td>
+                    <td>@(ev.Venue != null ? $"{ev.Venue.Name}, {ev.Venue.City}" : "-")</td>
+                    <td>
+                        @if (row.Categories.Any())
+                        {
+                            @string.Join(", ", row.Categories.Select(c => c.DistanceKm.ToString("0.##") + " km"))
+                        }
+                        else
+                        {
+                            <span class="text-muted">No categories yet</span>
+                        }
+                    </td>
+                    <td><span class="badge @UiHelper.StatusClass(ev.Status)">@ev.Status</span></td>
+                    <td class="text-nowrap text-end">
+                        <a asp-action="Categories" asp-route-eventId="@ev.EventId">Manage</a> |
+                        <a asp-action="EditEvent" asp-route-id="@ev.EventId">Edit</a> |
+                        <a asp-action="DeleteEvent" asp-route-id="@ev.EventId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

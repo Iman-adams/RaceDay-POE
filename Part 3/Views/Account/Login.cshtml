@@ -1,0 +1,39 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "Log in";
+    ViewData["Page"] = "page-auth";   // dark navy background on this page
+}
+
+<div class="auth-wrap">
+    <section class="auth-card" aria-labelledby="login-heading">
+        <p class="auth-brand"><svg class="rd-logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#8B5CF6" /><path d="M9 9l7 7-7 7M16 9l7 7-7 7" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg><span class="text">Race<span>Day</span></span></p>
+        <h1 id="login-heading">Log in</h1>
+
+        <form asp-action="Login" method="post">
+            <input type="hidden" asp-for="ReturnUrl" />
+
+            @* Errors that belong to the whole form, such as "Invalid email or password." *@
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" autocomplete="email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control" autocomplete="current-password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Log in</button>
+        </form>
+
+        <p class="auth-foot">New to RaceDay? <a asp-action="Register">Create an account</a></p>
+    </section>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

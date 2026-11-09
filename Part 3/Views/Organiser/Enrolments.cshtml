@@ -1,0 +1,63 @@
+﻿@using RaceDay.MVC.Services
+@model EnrolmentsPageModel
+@{
+    ViewData["Title"] = "Enrolments";
+    ViewData["Active"] = "Enrolments";
+}
+
+<partial name="_EventNav" />
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <p role="alert" class="alert alert-warning">@ViewBag.ErrorMessage</p>
+}
+
+<h2 class="h4">Enrolments (@Model.Enrollments.Count)</h2>
+
+@if (!Model.Enrollments.Any())
+{
+    <p>Nobody has enrolled in this event yet.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">Participant</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Enrolled on</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Update status and bib number</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var en in Model.Enrollments)
+                {
+                    <tr>
+                        <td>@(en.User?.FullName ?? "Unknown")</td>
+                        <td>@(en.Category?.CategoryName ?? "-")</td>
+                        <td>@en.EnrollmentDate.ToString("dd MMM yyyy")</td>
+                        <td><span class="badge @UiHelper.StatusClass(en.PaymentStatus)">@en.PaymentStatus</span></td>
+                        <td>
+                            <form asp-action="UpdateEnrolment" method="post" class="d-flex gap-2 flex-wrap">
+                                <input type="hidden" name="enrollmentId" value="@en.EnrollmentId" />
+                                <input type="hidden" name="eventId" value="@Model.Event.EventId" />
+                                <label class="visually-hidden" for="status-@en.EnrollmentId">Status</label>
+                                <select id="status-@en.EnrollmentId" name="paymentStatus" class="form-select form-select-sm w-auto">
+                                    @foreach (var status in UiHelper.EnrolmentStatuses)
+                                    {
+                                        <option value="@status" selected="@(status == en.PaymentStatus)">@status</option>
+                                    }
+                                </select>
+                                <label class="visually-hidden" for="bib-@en.EnrollmentId">Bib number</label>
+                                <input id="bib-@en.EnrollmentId" name="bibNumber" value="@en.BibNumber" maxlength="20" placeholder="Bib no." class="form-control form-control-sm w-auto" style="max-width: 7rem" />
+                                <button type="submit" class="btn btn-sm btn-outline-primary">Save</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -1,0 +1,16 @@
+﻿@model EnrollmentModel
+@{
+    ViewData["Title"] = "Cancel enrolment";
+}
+
+<h1>Cancel enrolment</h1>
+<p class="alert alert-warning" role="alert">
+    Are you sure you want to cancel your entry in <strong>@(Model.Category?.CategoryName ?? "this category")</strong>?
+</p>
+
+@* Cancelling changes data, so it is a POST form with an anti-forgery token *@
+<form asp-action="CancelEnrolmentConfirmed" method="post">
+    <input type="hidden" name="id" value="@Model.EnrollmentId" />
+    <button type="submit" class="btn btn-danger">Yes, cancel my enrolment</button>
+    <a class="btn btn-outline-secondary" asp-action="MyEvents">Keep my enrolment</a>
+</form>

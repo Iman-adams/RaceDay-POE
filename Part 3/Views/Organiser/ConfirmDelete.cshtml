@@ -1,0 +1,18 @@
+﻿@model ConfirmDeleteViewModel
+@{
+    ViewData["Title"] = Model.Heading;
+}
+
+<h1>@Model.Heading</h1>
+<p class="alert alert-warning" role="alert">@Model.Message</p>
+
+@* Deleting changes data, so it is a POST form with an anti-forgery token *@
+<form asp-action="@Model.PostAction" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    @if (Model.CancelId != null)
+    {
+        <input type="hidden" name="eventId" value="@Model.CancelId" />
+    }
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <a class="btn btn-outline-secondary" asp-action="@Model.CancelAction" asp-route-eventId="@Model.CancelId">Cancel</a>
+</form>

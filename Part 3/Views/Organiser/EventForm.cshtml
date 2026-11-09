@@ -1,0 +1,75 @@
+﻿@model EventFormViewModel
+@{
+    var isNew = Model.EventId == 0;
+    ViewData["Title"] = isNew ? "Create event" : "Edit event";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="@(isNew ? "CreateEvent" : "EditEvent")" method="post">
+    <input type="hidden" asp-for="EventId" />
+    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="EventDate" class="form-label"></label>
+            <input asp-for="EventDate" type="datetime-local" class="form-control" />
+            <span asp-validation-for="EventDate" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="EventType" class="form-label"></label>
+            <select asp-for="EventType" class="form-select">
+                <option value="">Choose a type</option>
+                <option value="Running">Running</option>
+                <option value="Cycling">Cycling</option>
+                <option value="Walking">Walking</option>
+            </select>
+            <span asp-validation-for="EventType" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="VenueId" class="form-label"></label>
+            <select asp-for="VenueId" class="form-select">
+                <option value="0">Choose a location</option>
+                @foreach (var venue in Model.Venues)
+                {
+                    <option value="@venue.VenueId" selected="@(venue.VenueId == Model.VenueId)">@venue.Name, @venue.City</option>
+                }
+            </select>
+            <span asp-validation-for="VenueId" class="text-danger"></span>
+            <div class="form-text">Location not listed? <a asp-action="CreateVenue">Add a new venue</a>.</div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Status" class="form-label"></label>
+            <select asp-for="Status" class="form-select">
+                <option value="Upcoming">Upcoming</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+    </div>
+
+    <p class="text-muted">Distances belong to the race categories. Add them on the next screen after saving the event.</p>
+
+    <button type="submit" class="btn btn-primary">@(isNew ? "Create event" : "Save changes")</button>
+    <a class="btn btn-outline-secondary" asp-action="Events">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
