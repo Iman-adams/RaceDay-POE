@@ -16,8 +16,7 @@ public class HomeController : Controller
         _api = api;
     }
 
-    // The events page: only for logged-in users. It asks the API for all events,
-    // then narrows them down using the filters chosen on the page.
+    // The events page: only for logged-in users. It asks the API for all events, then narrows them down using the filters chosen on the page.
     [SessionAuthorize]
     public async Task<IActionResult> Index(EventFilter filter)
     {
