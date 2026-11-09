@@ -2,7 +2,7 @@
 
 namespace RaceDay.MVC.Models
 {
-    // Data coming BACK from the API (these only carry data to the views)
+    // Data coming BACK from the API
 
     public class CategoryModel
     {
@@ -115,7 +115,7 @@ namespace RaceDay.MVC.Models
         public int? CancelId { get; set; }
     }
 
-    // Form models (what the organiser types in).
+    // Form models.
     // The rules are checked in the browser and again on the server.
 
     public class EventFormViewModel
@@ -220,7 +220,6 @@ namespace RaceDay.MVC.Models
         public int EventId { get; set; }
 
         // Shown at the top of the form so the organiser knows whose result this is
-        // (nullable on purpose: ASP.NET treats a non-nullable string as "required", and these are not typed in)
         public string? RunnerName { get; set; }
         public string? BibNumber { get; set; }
         public string? CategoryName { get; set; }
