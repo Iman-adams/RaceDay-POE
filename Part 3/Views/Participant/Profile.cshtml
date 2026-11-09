@@ -4,7 +4,7 @@
 }
 
 @{
-    // The first letters of the first two names (Mahmood Mohammad -> MM)
+    // The first letters of the first two names 
     var initials = string.Concat(Model.FullName.Split(' ', StringSplitOptions.RemoveEmptyEntries)
                                                .Take(2).Select(part => char.ToUpper(part[0])));
 }
