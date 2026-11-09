@@ -1,7 +1,7 @@
 ﻿namespace RaceDay.MVC.Services
 {
     // The names of the values we keep in the user's session.
-    // Using constants (instead of typing the text each time) means a spelling mistake becomes a build error.
+    // Using constants means a spelling mistake becomes a build error.
     public static class SessionKeys
     {
         public const string UserId = "UserId";
@@ -12,7 +12,7 @@
         public const string ApiCookie = "ApiCookie";
     }
 
-    // The only two roles in RaceDay (these must match the roles the API uses)
+    // The only two roles in RaceDay
     public static class RoleNames
     {
         public const string Organiser = "Organiser";
