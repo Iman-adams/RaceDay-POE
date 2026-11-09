@@ -2,6 +2,10 @@
 ## About RaceDay
 RaceDay is a web-based event management system for the South African road running, walking and cycling community. Organisers create events, race categories and results. Participants browse events, enter a category, and track their own results.
 
+# Part 3 - MVC
+## YouTube video
+https://youtu.be/ieNMEzYkXHg
+
 # Part 2 - RESTful API
 ## YouTube video
 https://youtu.be/vbwbnePUmkU
