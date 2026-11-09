@@ -24,7 +24,7 @@ namespace RaceDay.MVC.Controllers
                 : RedirectToAction("Index", "Home");
         }
 
-        // ---------------- Register ----------------
+        // Register
 
         [HttpGet]
         public IActionResult Register()
@@ -68,7 +68,7 @@ namespace RaceDay.MVC.Controllers
             return RedirectToAction("Login");
         }
 
-        // ---------------- Login ----------------
+        // Login
 
         [HttpGet]
         public IActionResult Login(string? returnUrl = null)
@@ -106,7 +106,7 @@ namespace RaceDay.MVC.Controllers
             return RedirectToLanding();
         }
 
-        // ---------------- Logout ----------------
+        // Logout
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -120,7 +120,7 @@ namespace RaceDay.MVC.Controllers
             return RedirectToAction("Login");
         }
 
-        // ---------------- Access denied ----------------
+        // Access denied
 
         public IActionResult AccessDenied()
         {
