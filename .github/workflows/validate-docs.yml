@@ -1,9 +1,8 @@
-name: RaceDay CI
+name: Validate Repository Documentation Structure
 
-# Runs on every push to any branch, and on every pull request into main/master
 on:
   push:
-    branches: [ "**" ]
+    branches: [ "main", "master", "part-2", "Part2", "part-3", "Part3", "Part-3" ]
   pull_request:
     branches: [ "main", "master" ]
 
@@ -12,7 +11,6 @@ jobs:
   # PART 1 - checks that the planning documents exist in /docs
   # ---------------------------------------------------------------
   validate-docs:
-    name: Part 1 - Validate planning documents
     runs-on: ubuntu-latest
 
     steps:
@@ -53,7 +51,6 @@ jobs:
   # PART 2 - builds the API and runs all unit tests
   # ---------------------------------------------------------------
   build-and-test:
-    name: Part 2 - Build API and run unit tests
     runs-on: ubuntu-latest
 
     steps:
@@ -92,11 +89,10 @@ jobs:
         run: dotnet test "${{ steps.find-sln.outputs.path }}" --configuration Release --no-build --verbosity normal
 
   # ---------------------------------------------------------------
-  # PART 3 - builds and publishes the MVC web app, and checks that it
-  # only talks to the API (never directly to the database)
+  # PART 3 - builds the MVC web app and checks that it only talks to
+  # the API (never directly to the database)
   # ---------------------------------------------------------------
   build-mvc:
-    name: Part 3 - Build MVC web app
     runs-on: ubuntu-latest
 
     steps:
