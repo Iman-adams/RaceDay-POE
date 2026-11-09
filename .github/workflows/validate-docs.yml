@@ -1,8 +1,9 @@
-name: Validate Repository Documentation Structure
+name: RaceDay CI
 
+# Runs on every push to any branch, and on every pull request into main/master
 on:
   push:
-    branches: [ "main", "master", "part-2", "Part2" ]
+    branches: [ "**" ]
   pull_request:
     branches: [ "main", "master" ]
 
@@ -11,6 +12,7 @@ jobs:
   # PART 1 - checks that the planning documents exist in /docs
   # ---------------------------------------------------------------
   validate-docs:
+    name: Part 1 - Validate planning documents
     runs-on: ubuntu-latest
 
     steps:
@@ -51,6 +53,7 @@ jobs:
   # PART 2 - builds the API and runs all unit tests
   # ---------------------------------------------------------------
   build-and-test:
+    name: Part 2 - Build API and run unit tests
     runs-on: ubuntu-latest
 
     steps:
@@ -87,3 +90,61 @@ jobs:
       - name: Run unit tests
         if: steps.find-sln.outputs.found == 'true'
         run: dotnet test "${{ steps.find-sln.outputs.path }}" --configuration Release --no-build --verbosity normal
+
+  # ---------------------------------------------------------------
+  # PART 3 - builds and publishes the MVC web app, and checks that it
+  # only talks to the API (never directly to the database)
+  # ---------------------------------------------------------------
+  build-mvc:
+    name: Part 3 - Build MVC web app
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      # Finds RaceDay.MVC.csproj wherever it is (repo root or a Part 3 subfolder)
+      - name: Locate the MVC project
+        id: find-mvc
+        run: |
+          PROJ=$(find . -name "RaceDay.MVC.csproj" -not -path "*/node_modules/*" | head -n 1)
+          if [ -z "$PROJ" ]; then
+            echo "::notice::No RaceDay.MVC.csproj found yet - skipping the Part 3 build."
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Using project: $PROJ"
+            echo "found=true" >> "$GITHUB_OUTPUT"
+            echo "path=$PROJ" >> "$GITHUB_OUTPUT"
+            echo "dir=$(dirname "$PROJ")" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Part 3 rule: the MVC app must use the API only. It must not contain any database code.
+      - name: Check the MVC app has no direct database access
+        if: steps.find-mvc.outputs.found == 'true'
+        run: |
+          DIR="${{ steps.find-mvc.outputs.dir }}"
+          if grep -rIlE "DbContext|Microsoft\.EntityFrameworkCore|System\.Data\.SqlClient|Microsoft\.Data\.SqlClient" \
+               --include="*.cs" --include="*.csproj" --include="*.cshtml" "$DIR" \
+               --exclude-dir=bin --exclude-dir=obj; then
+            echo "::error::The MVC project contains direct database code. It must only call the API."
+            exit 1
+          fi
+          echo "OK: the MVC project has no direct database access."
+
+      - name: Restore dependencies
+        if: steps.find-mvc.outputs.found == 'true'
+        run: dotnet restore "${{ steps.find-mvc.outputs.path }}"
+
+      - name: Build
+        if: steps.find-mvc.outputs.found == 'true'
+        run: dotnet build "${{ steps.find-mvc.outputs.path }}" --configuration Release --no-restore
+
+      # Publishing proves the app (views, styles and scripts included) is complete and deployable
+      - name: Publish
+        if: steps.find-mvc.outputs.found == 'true'
+        run: dotnet publish "${{ steps.find-mvc.outputs.path }}" --configuration Release --no-build --output ./mvc-publish
